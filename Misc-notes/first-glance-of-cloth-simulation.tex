@@ -1,13 +1,71 @@
 \documentclass{article}
 \usepackage{roboto}
 \usepackage{ctex}
+\usepackage{hyperref}
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{mathrsfs}
 
 \title{高级布料仿真技术整理}
-\date{today}
+\author{}
+\date{\today}
 
 \begin{document}
 \maketitle
 \tableofcontents
 
-\section{}
+\section{模拟基础}
+\par 在开始之前，先简要介绍部分物理模拟领域的基础内容，作为之后提到的各种方法的基础。
+\subsection{模型和模拟}
+\par 模型（model）和模拟（simulation）是创建物理模拟领域的两个关键概念，模型是一组对于物体的规则或既定的定律，表征并约束物体的行为或者操作方法，而模拟则是将模型封装在一个框架之内，从而预测该模型在时间上的演变。\cite{FoPBMA}
+\par 基于物理的模型也是模型的一种，它定义了一个系统如何表现各种物理规则。一般情况下，基于物理的模型是根据现实世界的物理规律构造的。但是，所有“真实”的模型实际上都是经过一定简化的——将影响较小的部分选择性忽略，专注于描述大尺度的行为和变化。
+\subsection{离散化}
+\par 众所周知，现实世界的时空是连续的，但是在计算机中，数据和逻辑以离散的形式存在。因此，当我们对现实世界在计算机中建模时，需要将连续的时空离散化处理。
+\par 对于时间的离散化，是将时间细分为一个个时步（time step）的方法，忽略每个时步内部的变化，然后每次使用前一个状态的内容计算下一个时步的状态。而对于空间的离散化，将在下一节与布料的表示一起讨论。
+\subsection{布料的表示}
+\par 在计算机图形学中，几何图形通常分解为许多三角形来进行表示。单个的三角形并不亮眼，但是许多三角形组合成的三角形网格拥有强大的几何表达能力。一个三角形由三个顶点（vertices or particles）和连接它们的边（edge）构成。布料是连续的材料，但是我们会把它分解为离散的顶点表示。
+\par 一个顶点一般具有坐标 $x$ 和速度 $v$ 两种内容，于是一个具有 $N$ 个顶点的服装可以用两个向量 $x \in \mathbb{R}^{3N}$ 和 $v \in \mathbb{R}^{3N}$ 表示：\cite{CloSim}
+$$ x = \begin{bmatrix}
+    x_{0_x} \\
+    x_{0_y} \\
+    x_{0_z} \\
+    \vdots \\
+    x_{{N-1}_x} \\
+    x_{{N-1}_y} \\
+    x_{{N-1}_z} \\
+\end{bmatrix}, \quad\quad
+v = \begin{bmatrix}
+    v_{0_x} \\
+    v_{0_y} \\
+    v_{0_z} \\
+    \vdots \\
+    v_{{N-1}_x} \\
+    v_{{N-1}_y} \\
+    v_{{N-1}_z} \\
+\end{bmatrix}.
+$$
+\section{质量弹簧阻尼模型}
+\subsection{弹簧模型}
+\subsection{显示积分法}
+\subsection{隐式积分法}
+\subsection{弯曲情况的改进}
+\subsection{锁定问题}
+\subsection{优缺点及应用}
+\section{基于位置的方法}
+\subsection{基于位置的动力学方法}
+\subsection{投影动力学方法}
+\subsection{约束动力学方法}
+\section{有限元方法与弹性模型}
+\subsection{有限元方法}
+\subsection{有限体积方法}
+\subsection{超弹性模型}
+\section{物质点法}
+See ../../Papers-notes
+\section{基于学习的方法}
+See ../../Papers-notes
+
+\begin{thebibliography}{50}
+    \bibitem{games103}Huamin Wang. GAMES 103 [MOOC]. GAMES-CN. \newline \href{https://games-cn.org/games103/}{https://games-cn.org/games103/}
+    \bibitem{FoPBMA}House, D., \& Keyser, J.C. (2016). Foundations of Physically Based Modeling and Animation (1st ed.). A K Peters/CRC Press. \newline \href{https://doi.org/10.1201/9781315373140}{https://doi.org/10.1201/9781315373140}
+    \bibitem{CloSim}Tuur Stuyck (2018). Cloth Simulation for Computer Graphics (1st ed.). Springer Cham. \newline \href{https://doi.org/10.1007/978-3-031-02597-6}{https://doi.org/10.1007/978-3-031-02597-6}
+\end{thebibliography}
 \end{document}
