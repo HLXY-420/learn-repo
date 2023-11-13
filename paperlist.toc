@@ -15,7 +15,7 @@
 \contentsline {subsection}{\numberline {7.1}Math}{6}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Physics}{6}{subsection.7.2}%
 \contentsline {section}{\numberline {8}Misc}{6}{section.8}%
-\contentsline {subsection}{\numberline {8.1}GNN}{6}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.1}GNN}{7}{subsection.8.1}%
 \contentsline {subsubsection}{\numberline {8.1.1}Papers to read}{7}{subsubsection.8.1.1}%
 \contentsline {subsection}{\numberline {8.2}HGNN}{7}{subsection.8.2}%
 \contentsline {subsubsection}{\numberline {8.2.1}Papers to read}{7}{subsubsection.8.2.1}%
