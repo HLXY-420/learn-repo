@@ -1,0 +1,144 @@
+\documentclass{article}
+\usepackage{roboto}
+\usepackage{ctex}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=blue,
+    urlcolor=blue,
+    citecolor=cyan.
+}
+
+\title{CG resources collection}
+\author{Yuchen Liu}
+\date{\today}
+
+\begin{document}
+\setcounter{section}{-1}
+\maketitle
+\tableofcontents
+
+\begin{abstract}
+    This is a collection of resources about Simulations of Computer Graphics which include SIGGRAPH courses, open courses, books, websites, and papers. And in each folder of this project lies my notes. Note that because this collection is my personal collection, there are some things related to my research interests but not CG.
+\end{abstract}
+
+\section{In Progress}
+\begin{enumerate}
+    \item save money for overleaf student plan.
+\end{enumerate}
+
+\newpage
+
+\section{SIGGRAPH courses}
+\par A curated list of SIGGRAPH courses to learn. (sort by time)
+\begin{enumerate}
+    \item \href{https://www.cs.cmu.edu/~baraff/sigcourse/index.html}{97' Physically Based Modeling: Principles and Practice}
+    \item \href{https://matthias-research.github.io/pages/publications/realtimeCoursenotes.pdf}{08' Real time physics}
+    \item \href{https://viterbi-web.usc.edu/~jbarbic/femdefo/}{12' FEM Simulation of 3D Deformable Solids: A practitioner's guide to theory, discretization and model reduction}
+    \item \href{https://www.math.ucla.edu/~cffjiang/research/mpmcourse/mpmcourse.pdf}{16' The Material Point Method for Simulating Continuum Materials}
+    \item \href{https://mfratarcangeli.github.io/publication/sa2018course/}{18' Parallel iterative solvers for real-time elastic deformations}
+    \item \href{https://www.cs.ucr.edu/~shinar/papers/2018_introduction_to_pba.pdf}{19' An Introduction to Physics-based Animation} \newline YouTube: \href{https://www.youtube.com/watch?v=b_WJ-HwalwU}{here}
+    \item \href{https://www.tkim.graphics/DYNAMIC_DEFORMABLES/}{20'22' Dynamic Deformables: Implementation and Production Practicalities}
+    \item \href{https://siggraphcontact.github.io/}{22' Contact and Friction Simulation for Computer Graphics}
+\end{enumerate}
+
+\section{Open courses}
+\par A curated list of open courses to learn. (sort by topics)
+\begin{enumerate}
+    \item CS6660 Physics-based Animation \href{https://www.youtube.com/playlist?list=PL_a9tY9IhJuPc7e6r-3DMw_PbYbloKoWM}{YouTube playlist}
+    \item \href{https://www.cs.cornell.edu/courses/cs5643/2023sp/}{CS5643 Physically Based Animation for Computer Graphics}
+\end{enumerate}
+\subsection{GAMES series}
+\par Collection of GAMES open courses which's about CG basics and simulation \& animation.
+\begin{enumerate}
+    \item GAMES-101 现代计算机图形学入门 \newline 官网：\href{https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html}{https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html} \newline B站：\href{https://www.bilibili.com/video/av90798049}{https://www.bilibili.com/video/av90798049} \newline related resources: \href{https://www.zhihu.com/column/c_1249465121615204352}{计算机图形学系列笔记}
+    \item GAMES-103 基于物理的计算机动画入门 \newline 官网：\href{https://games-cn.org/games103/}{https://games-cn.org/games103/} \newline B站：\href{https://www.bilibili.com/video/BV12Q4y1S73g/}{https://www.bilibili.com/video/BV12Q4y1S73g/} \newline related resources: \href{https://www.zhihu.com/column/c_1481545880260513792}{一份笔记总结}
+    \item GAMES-105 计算机角色动画基础 \newline 官网：\href{https://games-cn.org/games105/}{https://games-cn.org/games105/} \newline B站：\href{https://www.bilibili.com/video/BV1GG4y1p7fF/}{https://www.bilibili.com/video/BV1GG4y1p7fF/}
+    \item GAMES-201 高级物理引擎实战指南 \newline 官网：\href{https://games-cn.org/games201/}{https://games-cn.org/games201/} \newline B站：\href{https://www.bilibili.com/video/BV1ZK411H7Hc/}{https://www.bilibili.com/video/BV1ZK411H7Hc/}
+    \item GAMES-202 高质量实时渲染 \newline 官网：\href{https://games-cn.org/games202/}{https://games-cn.org/games202/} \newline B站：\href{https://www.bilibili.com/video/BV1YK4y1T7yY/}{https://www.bilibili.com/video/BV1YK4y1T7yY/} 
+    \item GAMES-401 泛动引擎物理仿真编程与实践 \newline 官网：\href{https://games-cn.org/games401/}{https://games-cn.org/games401/} \newline B站：\href{https://www.bilibili.com/video/BV15M4y1U76M/}{https://www.bilibili.com/video/BV15M4y1U76M/}
+\end{enumerate}
+\subsection{Virtual human}
+\begin{itemize}
+    \item \href{https://smpl-made-simple.is.tue.mpg.de/}{CVPR 21' tutorial: SMPL made Simple}
+\end{itemize}
+
+
+\section{Books}
+\par A curated list of books to read. (sort by topics)
+\subsection{CG basics}
+\begin{itemize}
+    \item Fundamentals of Computer Graphics (fifth edition), Steve Marschner, Peter Shirley et al. 2022
+\end{itemize}
+\subsection{Rendering}
+\begin{itemize}
+    \item Physically Based Rendering: From Theory To Implementation (fourth edition), Matt Pharr, Wenzel Jakob, and Greg Humphreys, 2023 \newline \href{https://pbr-book.org/}{freely available online}
+    \item Real-Time Rendering (fourth edition), Tomas Akenine-M¨oller, Eric Haines, Naty Hoffman, Angelo Pesce, Michal Iwanicki, Sebastien Hillaire, 2018
+    \item Ray Tracing Gems I, Alexander Keller et al. 2019 \newline \href{https://www.realtimerendering.com/raytracinggems/rtg/index.html}{freely dowload}
+    \item Ray Tracing Gems II, Per Christensen et al. 2021 \newline \href{https://www.realtimerendering.com/raytracinggems/rtg2/index.html}{freely download}
+\end{itemize}
+\subsection{PBA}
+\begin{itemize}
+    \item Physics-Based Animation, Kenny Erleben et al. 2005
+    \item Computer Animation: Algorithms and Techniques, Rick Parent, 2012
+    \item Foundations of Physically Based Modeling and Animation, 2017
+    \item Cloth Simulation for Computer Graphics, Tuur Stuyck, 2018
+\end{itemize}
+
+\section{Websites}
+\par A curated list of noteworthy website. (no sort)
+\begin{enumerate}
+    \item GAMES-CN 计算机图形学与混合现实研讨会 \newline \href{https://games-cn.org/}{https://games-cn.org/}
+    \item Resources for Computer Graphics \newline \href{https://kesen.realtimerendering.com/}{https://kesen.realtimerendering.com/}
+    \item Physics-Based Animation \newline \href{https://www.physicsbasedanimation.com/}{https://www.physicsbasedanimation.com/}
+    \item Code Replicability in Computer Graphics \newline \href{https://replicability.graphics/}{https://replicability.graphics/}
+\end{enumerate}
+
+\section{Papers}
+\par A curated list of papers to read. (sort by topics and time)
+
+\section{Tools}
+\par A curated list of tools that may help in CG researches. (sort by topics)
+\subsection{Taichi}
+\par Taichi programming language, something can accelerate both programming and performance.
+\begin{itemize}
+    \item Official site: \href{https://taichi.graphics/}{Taichi Lang}
+    \item GitHub repo: \href{https://github.com/taichi-dev/taichi}{taichi-dev/taichi}
+\end{itemize}
+
+\section{Math and Physics}
+\par Math and Physics learning resources, mainly books.
+\subsection{Math}
+\begin{enumerate}
+    \item ()
+\end{enumerate}
+\subsection{Physics}
+
+\section{Misc}
+\par Something that not about CG or Simulation but hit my interests. (sort by topics)
+\subsection{GNN}
+\par Graph neural networks, applied in learning based simulation.
+\begin{itemize}
+    \item Graph Representation Learning, William L. Hamilton, 2020
+    \item GitHub awesome-self-supervised-gnn, \href{https://github.com/ChandlerBang/awesome-self-supervised-gnn}{Link}
+    \item CS224W: Machine Learning with Graphs \newline Official site: \href{https://snap.stanford.edu/class/cs224w-2020/}{https://snap.stanford.edu/class/cs224w-2020/} \newline Bilibili: \href{https://www.bilibili.com/video/av677623822}{https://www.bilibili.com/video/av677623822}
+    \item Some related Zhihu columns \newline \href{https://www.zhihu.com/column/c_1330471030893662208}{图神经网络} \newline \href{https://www.zhihu.com/column/marlin}{深度学习与图网络} \newline \href{https://www.zhihu.com/column/c_1115285924917047296}{图算法-时序建模-迁移学习}
+\end{itemize}
+\subsubsection{Papers to read}
+\begin{itemize}
+    \item 
+\end{itemize}
+\subsection{HGNN}
+\par HyperGraph neural network, something interesting, and I wish to use it in my researches. It's a brand-new subject now (2023.11.13), so there are only papers?
+\begin{itemize}
+    \item GitHub Awesome-HyperGraph-Network, \href{https://github.com/gzcsudo/Awesome-Hypergraph-Network}{Link}
+\end{itemize}
+\subsubsection{Papers to read}
+\begin{itemize}
+    \item 
+\end{itemize}
+
+
+\end{document}
