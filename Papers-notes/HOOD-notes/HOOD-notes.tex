@@ -1,0 +1,54 @@
+\documentclass[a4paper, notitlepage, twocolumn]{article}
+\usepackage{roboto}
+\usepackage{ctex}
+
+\title{HOOD-notes}
+\author{刘宇宸}
+\date{2023年9月20日}
+
+\begin{document}
+\maketitle
+
+\section{HOOD 内容总结}
+\par
+作者们使用了图神经网络，将服装转化为具有不同等级节点的图来进行处理：节点与最邻近的身体节点间、节点与相邻结点间、节点与相邻同级节点间分别有边进行连接。
+\par
+每次躯体动作发生改变时，使用多层感知机，利用最底层节点特征更新所有层的边的特征，然后利用边的特征更新所有节点的特征。分层级的节点使得可以在不同的层级间分别同时传递信息，提升了性能。
+\par
+多层感知机学习每条边所对应的节点间非线性关系。在每次更新信息时，只保留与当前处理部分相连的与身体节点相连的边，排除了无关人体节点边的干扰。
+\par
+采用了基于物理的损失函数，使得神经网络进行更贴近实际情况的模拟，提升了对未知服装、动作、拓扑的模拟能力。
+\par
+使用了基于观众比较反馈的感性测评方式，得出优于先前基于深度学习的最优方法和接近物理渲染方法的结论。
+\section{HOOD 同期相关工作}
+\par
+在CVPR2023,WACV2023,NeurIPS2022和arxiv上，找到了一些其他基于深度学习方法的服装模拟工作：
+\begin{itemize}
+    \item 近期的基于深度学习方法的服装模拟普遍采用了物理相关的技术，如HOOD使用了基于物理的损失函数，来自CVPR2023的GenSim将物理信息和服装节点及边相关联；
+    \item 对服装的建模方法和设计网络的形式多样化：来自WACV2023的GarSim将服装建模为粒子并基于织物学习并感知变形；来自NeurIPS2022的ULNeF采用神经场的方法建模人体和服装，arxiv上的ISP沿用了此方法进行多层服装的建模及模拟；此刻在arxiv上，在投ICML2023的BSMS-GNN提出了一种同样基于GNN的方法，还没读明白；
+\end{itemize}
+\section{HOOD 可能的改进方向}
+\par
+在文中提到的方向：
+\begin{enumerate}
+    \item 解决服装与服装间交互的处理问题；
+    \item 处理高速运动时的服装形变；
+    \item 处理有严重自交的身体上的服装。
+\end{enumerate}
+\par
+在参考相关论文或经过头脑风暴后找到的可能的方向：
+\begin{enumerate}
+    \item 优化神经网络的结构，如BSMS-GNN，可能参考图神经网络相关的工作，如GraphUnets等；
+    \item 进一步阅读Example-based elastic materials等论文，了解服装模拟在基于物理的图形学领域的信息，从此角度改进HOOD的方法；
+    \item 注意到在服装的惯性模拟上，HOOD与被用来作为参考的ARCSIM尚有明显的差距，可以从此角度改进HOOD；
+    \item 以观众观感为基准的感性测评方式容易出现较大的误差，或许可以找到一种更好的评测服装模拟器的方案；
+    \item 可以尝试采用上月新发布的ClotheNet数据集，可能会有更好的训练结果，或者其他与数据集相关的改进。
+\end{enumerate}
+\section{下一阶段计划}
+\begin{enumerate}
+    \item 开始阅读HOOD的代码，进一步了解其底层原理，可能需要更进一步的神经网络知识；
+    \item 钻研aitviewer或者其他可以展示服装模拟结果的软件，HOOD采用的aitviewer在我的电脑上似乎无法正常工作，正在搜索解决方案，看到渲染结果后可能能找到其他值得改进的地方；
+    \item 继续先前在数学、深度学习和图形学的学习，或许能收获更多启发；
+    \item 了解更多的科研工具，改进目前pdf.ai粗读+zotero精读+vscode编写及查阅代码+wsl2运行代码的工作流程。
+\end{enumerate}
+\end{document}
