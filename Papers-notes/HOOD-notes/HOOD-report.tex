@@ -11,15 +11,53 @@
 
 \begin{document}
 \maketitle
+\tableofcontents
 \begin{abstract}
     A report after reading HOOD\cite{grigorev2023hood}. Including 3 parts: the garment representation used in HOOD, the network architecture of HOOD, and possible improvements.
 \end{abstract}
-\section{Garment Representation}
+\section{Innovations}
+\begin{itemize}
+    \item Using graph neural networks. Learning local states. Based on MeshGraphNets\cite{pfaff2021learning}.
+    \item Build a message-passing scheme over a hierarchical graph that interleaves propagation steps at different levels of resolution.
+    \item Using physics-based loss function which is an incremental potential for implicit time stepping.
+    \item Using a simple and efficient graph coarsening strategy which allowed the network implicitly learn transition between graph levels.
+\end{itemize}
 
-\section{Network Design}
-\subsection{Encoder}
-\subsection{$N$ Message-Passing Steps}
-\subsection{Decoder}
+\section{Garment Preprocessing}
+\subsection{Build up basic graph and extensions}
+\subsubsection{}
+\subsection{Hierarchical graph construction}
+
+\section{Message Passing}
+\subsection{Basic message passing}
+\subsection{Multi-level message passing}
+
+\section{Physical Supervision}
+\subsection{Physical garment model}
+\subsection{Novel terms in the loss function}
+\subsubsection{Collision term}
+\subsubsection{Friction}
+\subsubsection{Vertex mass and canonical geometries}
+\subsection{Vertex mass and canonical geometries}
+\section{Conclusion}
+\subsection{Enhancement}
+\begin{itemize}
+    \item Computationally cheap, compared to physics-based approaches.
+    \item Train once, simulate every dynamic cloth, compared to other learning-based approaches.
+    \item Be able to handle changes in topology and dynamic material parameters.
+    \item Truly unsupervised, without the need of ground-truth data.
+    \item State-of-the-art.
+\end{itemize}
+\subsection{Problems remain}
+\begin{itemize}
+    \item Cannot simulate high speed animation, especially when body motions exceed the velocity seen at training time.
+    \item Weak on solving garment self-collision.
+    \item (Based on my observation) Low accuracy on prediction of inertia \& creases in motion.
+    \item Batch size was locked to 1, which means low reasoning speed.
+\end{itemize}
+
+\section{Possible Improvements}
+\subsection{}
 
 \bibliographystyle{IEEEtran}
 \bibliography{HOOD-notes}
