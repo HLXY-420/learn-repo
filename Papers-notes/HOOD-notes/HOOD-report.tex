@@ -3,6 +3,9 @@
 \usepackage{amsthm, amsmath, amssymb}
 \usepackage{mathrsfs}
 \usepackage{cite}
+\usepackage{indentfirst}
+\usepackage{algpseudocodex}
+\usepackage{hyperref}
 
 
 \title{HOOD-report}
@@ -13,24 +16,58 @@
 \maketitle
 \tableofcontents
 \begin{abstract}
-    A report after reading HOOD\cite{grigorev2023hood}. Including 3 parts: the garment representation used in HOOD, the network architecture of HOOD, and possible improvements.
+    A report after reading HOOD\cite{grigorev2023hood}. Including the analysis of its method and possible improvements.
 \end{abstract}
 \section{Innovations}
 \begin{itemize}
     \item Using graph neural networks. Learning local states. Based on MeshGraphNets\cite{pfaff2021learning}.
     \item Build a message-passing scheme over a hierarchical graph that interleaves propagation steps at different levels of resolution.
     \item Using physics-based loss function which is an incremental potential for implicit time stepping.
-    \item Using a simple and efficient graph coarsening strategy which allowed the network implicitly learn transition between graph levels.
+    \item Using a simple and efficient graph coarsening strategy which allowed the network implicitly learn transition etween graph levels.
 \end{itemize}
 
 \section{Garment Preprocessing}
 \subsection{Build up basic graph and extensions}
-\subsubsection{}
+\par In computer graphics, a common method to model garments is to build a garment mesh of vertices and edges. Apparently, this structure is easy to translate into a graph consisting of the same vertices and edges. Moreover, the graph augments \textit{body edges} : the edge between vertices and nearest body node.
+\par Feature vectors:
+\begin{itemize}
+    \item To nodes, $v_i$ includes velocity $\vec{v}$, normal vector $\vec{n}$, mass $\vec{m}$, node type, and local material parameters($\mu_{Lame}, \lambda_{Lame}$ and $k_{bending} $).
+    \item To edges, $e_{ij}$ includes the relative position between their two nodes.
+\end{itemize}
+\par 
 \subsection{Hierarchical graph construction}
-
+\par In MeshGraphNets\cite{pfaff2021learning}, the simulation was implemented by the message passing through the graph. But in cloth simulation, the result is sensitive to the number of message passing steps, which makes it hard to manually set the number of steps. To address this problem, a message-passing scheme over a hierarchical graph that interleaves propagation steps at different levels of resolution was applied.
+\par The hierarchical graph is a combination of several levels of coarsened garment graphs which were built by recursively applying the algorithm below:
+\newpage
+\begin{algorithmic}[1]
+    \State \textbf{input :} fine graph $G_f(V_f,E_f)$
+    \State \textbf{output:} coarse graph $G_c(V_c,E_c)$
+    \State $v_{center}$ $\gets$ center of $G_f$
+    \Comment{$v_{center}$'s eccentricity is equal to the graph’s radius.}
+    \For{$v_i$ in $V_f$}
+        \State $d_i \gets distance(v_{center}, v_i)$
+    \EndFor
+    \State $V_c \gets \{v_i \in V_f | d_i \mod 2 = 0\}$
+    \State $E_c \gets \{\}$
+    \State $V^{interm} \gets \{v_i \in V_f | d_i \mod 2 = 1\}$
+    \For{$v_i \in V^{interm}$}
+        \State $V^{from} \gets \{v_j \in V_f | e_{ij} \in E_f \text{ \& } d_j = d_i - 1\}$
+        \Comment{$V^{from} \subseteq V_c$}
+        \State $V^{to} \gets \{v_j \in V_f | e_{ij} \in E_f \text{ \& } d_j = d_i + 1\}$
+        \Comment{$V^{to} \subseteq V_c$}
+        \For{$v_j$ in $V^{from}$}
+            \For{$v_k$ in $V^{to}$}
+                \State $push(e_{jk}, E_c)$
+                \Comment{$e_{jk}$ connect nodes in $V_c$, thus $e_{jk} \in E_c$}
+            \EndFor
+        \EndFor
+    \EndFor
+\end{algorithmic}
+\par Through this algorithm, we build coarsened graph $G_c$ from the input graph $G_f$, and this coarsened level is the cornerstone of \href{sec:MLMP}{Section 3.2}.
 \section{Message Passing}
 \subsection{Basic message passing}
 \subsection{Multi-level message passing}
+\label{sec:MLMP}
 
 \section{Physical Supervision}
 \subsection{Physical garment model}
@@ -38,7 +75,6 @@
 \subsubsection{Collision term}
 \subsubsection{Friction}
 \subsubsection{Vertex mass and canonical geometries}
-\subsection{Vertex mass and canonical geometries}
 \section{Conclusion}
 \subsection{Enhancement}
 \begin{itemize}
@@ -57,7 +93,10 @@
 \end{itemize}
 
 \section{Possible Improvements}
-\subsection{}
+\subsection{Details change}
+\subsection{Model structure}
+\subsection{"Serialization"}
+\subsection{Hypergraph}
 
 \bibliographystyle{IEEEtran}
 \bibliography{HOOD-notes}
