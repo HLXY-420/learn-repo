@@ -64,9 +64,15 @@
         \EndFor
     \EndFor
 \end{algorithmic}
-\par Through this algorithm, we build coarsened graph $G_c$ from the input graph $G_f$, and this coarsened level is the cornerstone of \href{sec:MLMP}{Section 3.2}.
+\par Through this algorithm, we build coarsened graph $G_c$ from the input graph $G_f$, and this coarsened level is the cornerstone of \href{subsection.3.2}{Section 3.2}.
 \section{Message Passing}
 \par In the GNN for simulation series, the GNN is built up by MLPs which learn the relationship between edges and nodes. And the model predict next time step through $N$ message-passing steps.
+\par The full model of HOOD consists of:
+\begin{itemize}
+    \item Several encoder MLPs: 1 for nodes, 1 for body edges, 1 for each level's edges.
+    \item $N$ message-passing steps: 1 for nodes, 1 for body edges, 1 for each level's edges(levels processed in current step).
+    \item Decoder MLP: only 1, predict the acceleration, preparing for next time steps.
+\end{itemize}
 \subsection{Basic message passing}
 \par In each single message-passing step, edge feature are first updated as:
 $$
@@ -76,9 +82,9 @@ $$
 $$
 v_i \gets f_{e \rightarrow v}(v_i,\sum_{j}e_{ij}^{body},\sum_{j}e_{ij}) , 
 $$
-\par $f_{v \rightarrow e}$ and $f_{e \rightarrow v}$ are both multi-layer perceptions.
+\par $f_{v \rightarrow e}$ and $f_{e \rightarrow v}$ are both multi-layer perceptions. All nodes share the same MLP, and each set of edges share the separate MLPs.
+\par 
 \subsection{Multi-level message passing}
-\label{sec:MLMP}
 
 \section{Physical Supervision}
 \subsection{Physical garment model}
