@@ -42,6 +42,7 @@
 \begin{algorithmic}[1]
     \State \textbf{input :} fine graph $G_f(V_f,E_f)$
     \State \textbf{output:} coarse graph $G_c(V_c,E_c)$
+    \Comment{$G_c \subseteq G_f, V_c \subseteq V_f, E_c \subseteq E_f$}
     \State $v_{center}$ $\gets$ center of $G_f$
     \Comment{$v_{center}$'s eccentricity is equal to the graph’s radius.}
     \For{$v_i$ in $V_f$}
@@ -65,7 +66,17 @@
 \end{algorithmic}
 \par Through this algorithm, we build coarsened graph $G_c$ from the input graph $G_f$, and this coarsened level is the cornerstone of \href{sec:MLMP}{Section 3.2}.
 \section{Message Passing}
+\par In the GNN for simulation series, the GNN is built up by MLPs which learn the relationship between edges and nodes. And the model predict next time step through $N$ message-passing steps.
 \subsection{Basic message passing}
+\par In each single message-passing step, edge feature are first updated as:
+$$
+e_{ij} \gets f_{v \rightarrow e}(e_{ij},v_{i},v_{j}) ,
+$$
+\par And then, node feature are updated as:
+$$
+v_i \gets f_{e \rightarrow v}(v_i,\sum_{j}e_{ij}^{body},\sum_{j}e_{ij}) , 
+$$
+\par $f_{v \rightarrow e}$ and $f_{e \rightarrow v}$ are both multi-layer perceptions.
 \subsection{Multi-level message passing}
 \label{sec:MLMP}
 
