@@ -18,6 +18,7 @@
 \begin{abstract}
     A report after reading HOOD\cite{grigorev2023hood}. Including the analysis of its method and possible improvements.
 \end{abstract}
+\newpage
 \section{Innovations}
 \begin{itemize}
     \item Using graph neural networks. Learning local states. Based on MeshGraphNets\cite{pfaff2021learning}.
@@ -83,15 +84,32 @@ $$
 v_i \gets f_{e \rightarrow v}(v_i,\sum_{j}e_{ij}^{body},\sum_{j}e_{ij}) , 
 $$
 \par $f_{v \rightarrow e}$ and $f_{e \rightarrow v}$ are both multi-layer perceptions. All nodes share the same MLP, and each set of edges share the separate MLPs.
-\par 
+\par The encoder convert the input feature vectors into latent vectors with $h$ dimensions, in HOOD $h = 128$. In each message-passing steps, the latent vector of each node and edge of the graph is updated. And then, the decoder convert latent vectors to scalar accelerations.
 \subsection{Multi-level message passing}
-
-\section{Physical Supervision}
+\par In \href{subsection.2.2}{Section 2.2}, a hierarchical graph was built up, where nodes are shared across all levels and each level takes different edges.
+\par For each level $l$, $e_{ij}^{l}$ is the feature vector of its edges. In each step, we update edges of all levels first:
+$$
+e_{ij}^{l} \gets f_{v \rightarrow e}^{l}(e_{ij}^{l},v_i,v_j)
+$$
+\par Then update nodes' feature vectors($L$ is the number of levels processed in this step):
+$$
+v_i \gets f_{e \rightarrow v}(v_i,\sum_{j}e_{ij}^{body},\sum_{j}e_{ij}^1,\dots,\sum_{j}e_{ij}^{L})
+$$
+\par These Multi-level message passing steps transfer information between levels efficiently, since it can simultaneously handle any number of levels. It plays the role of explicit averaging or interpolation in other methods. In HOOD, there's a three-level hierarchy and each message-passing step operates two adjacent level at a time.
+\section{Physical Supervision(To Be completed)}
 \subsection{Physical garment model}
+\par Actually I cannot understand the Physical formulas now(2023.11.18), so I simply put the $\mathcal{L}_{total}$ here:
+\begin{align*}
+    \mathcal{L}_{total} = & \mathcal{L}_{stretching}(X^{t+1}) + \mathcal{L}_{bending}(X^{t+1}) + \mathcal{L}_{gravity}(X^{t+1}) +\\ & \mathcal{L}_{friction}(X^t,X^{t+1}) + \mathcal{L}_{collision}(X^t,X^{t+1}) +\\ & \mathcal{L}_{inertia}(X^{t-1},X^t,X^{t+1})
+\end{align*}
+\par where $X^{t-1},X^t$ and $X^{t+1}$ are positions of nodes at those time steps.
 \subsection{Novel terms in the loss function}
-\subsubsection{Collision term}
-\subsubsection{Friction}
-\subsubsection{Vertex mass and canonical geometries}
+\par HOOD takes SNUG\cite{santesteban2022snug}'s physically based loss function, and makes some change on it.
+\begin{itemize}
+    \item Collision term: use body mesh, not vertex.
+    \item Stretching term: using relaxed 3D resting pose triangles projected into 2D instead of 2D triangles from UV space.
+    \item Friction term (novel): rough but useful. But I can't understand the formulas now(2023.11.18).
+\end{itemize}
 \section{Conclusion}
 \subsection{Enhancement}
 \begin{itemize}
@@ -110,11 +128,31 @@ $$
 \end{itemize}
 
 \section{Possible Improvements}
-\subsection{Details change}
+\par After the analysis of HOOD, we could find several parts of it can be improved. Also, I got some new ideas after glancing at papers in related fields.
+\subsection{Fragmentary thoughts}
+\begin{itemize}
+    \item More precise $\mathcal{L}_{friction}$.
+    \item Maybe a neural solver for Codium-IPC\cite{li2020codimensional} to enhance the collision detection?
+    \item Using STAR\cite{STAR:2020} instead of SMPL\cite{SMPL:2015}.
+    \item Better ways to evaluation cloth simulation frameworks to replace the volunteer perception evaluation.
+    \item Decompose high-speed motion into several parts and process them separately before combining them.
+\end{itemize}
 \subsection{Model structure}
+\begin{enumerate}
+    \item It's easy to find out that different vertices of cloth has different contribution to the visual experience. Thus, we can introduce attention to the GNN to make it a GAT like what SwinGar\cite{li2023swingar} done.
+    \item HOOD learns something that fit physics law closely. Then we may break cloth into parts, and treat each parts as a whole to apply a learning based simulator and build a graph of all parts.
+    \item Not to update all nodes each time, such as only update nodes in levels $\ge 2$ and use interpolation to handle other nodes, then update all nodes in next time step. This way we can build more complex networks.
+\end{enumerate}
 \subsection{"Serialization"}
+\par Noted that, the deformation is a continuous process. And we made a dicretisation of time to break the process into points in timeline.
+\par So it's naturally to handle it as sequences. This way, let's introduce techniques for processing continuous text sequences in Natural Language Processing.
+\par Similar thoughts have already appeared in papers, for example, Neural Cloth Simulation\cite{bertiche2022neural} used body motions to indicate the state of cloth.
 \subsection{Hypergraph}
+\par This section is an expanded idea of the second element listed in \href{subsection.6.2}{Section6.2}.
+\par Hypergraph consist of hyperedges and nodes. Thus, HGNN(hypergraph neural networks) can learn the relationship between a group of nodes. To small parts of simulation object, we can approximately treat it as a hypergraph to accelerate the message-passing steps though nodes inside it.
+\par Hypergraph has not been introduced to simulations, it may have the potential.
 
+\newpage
 \bibliographystyle{IEEEtran}
 \bibliography{HOOD-notes}
 
