@@ -10,3 +10,7 @@
 # Bibtex files
 *.bbl
 *.blg
+
+# Beamer files
+*.snm
+*.nav
