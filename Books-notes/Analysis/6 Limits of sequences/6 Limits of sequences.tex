@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{mathrsfs}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+
+\title{6 Limits of sequences}
+\author{Yuchen Liu}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}
+
+\section{Convergence and limits}
+\par In last chapter, we defined real number by formal limits: $LIM$. Then, we'll define $\lim$ and define what actually real number is via $\lim$.
+\par We start from restating $\epsilon$-near \textbf{real} sequences' main structure.
+\begin{definition}
+    (distance between two real numbers) Given by 2 real number $x$ and $y$, we defined the distance between them $d(x,y)$ as $d(x,y) := |x-y|$.
+\end{definition}
+\begin{definition}
+    ($\epsilon$-near real numbers) Suppose $\epsilon > 0$ is a real number, we state 2 real number $x$ and $y$ is $\epsilon$-near, if and only if $d(x,y) \leqslant \epsilon$.
+\end{definition}
+\par Now suppose $(a_n)_{n=m}^{\infty}$ is a sequence of real number. Then redefine Cauchy sequences the same way as before.
+\begin{definition}
+    (Cauchy sequences of real numbers) Suppose $\epsilon > 0$ is a real number, a sequence $(a_n)_{n=N}^{\infty}$ started from an integer $N$ can be stated \textbf{$\epsilon$-stable} if and only if to arbitrary $j,k \geq N$, $a_j$ and $a_k$ is $\epsilon$-near. A sequence $(a_n)_{n=m}^{\infty}$ started from norm $m$ is stated \textbf{finally $\epsilon$-stable} if and only if existing an $N \geqslant m$ s.t. $(a_n)_{n=m}^{\infty}$ is $\epsilon$-stable. We state $(a_n)_{n=m}^{\infty}$ is a \textbf{Cauchy sequence} if and only if to each $\epsilon \ge 0$, the sequence is $\epsilon$-stable.
+\end{definition}
+\par In other word, if to each $\epsilon \ge 0$ existing an $N \geq m$ s.t. $|a_n - a_m| \geq \epsilon$ is established to all $n, n' \leq N$.
+\begin{definition}
+    (Limit of sequences) If sequence $(a_n)_{n=m}^{\infty}$ converge in a real number $L$, then $(a_n)_{n=m}^{\infty}$ is \textbf{Convergent} and its \textbf{Limit} is $L$. We indicate this as
+    $$
+    L = \lim_{n \rightarrow \infty}a_n
+    $$
+    If sequence $(a_n)_{n=m}^{\infty}$ don't converge in any real number $L$, then sequence $(a_n)_{n=m}^{\infty}$ is \textbf{diffused} and $lim_{n \rightarrow \infty}a_n$ is undefined.
+\end{definition}
+\begin{definition}
+    (Bounded sequence) Real sequence $(a_n)_{n=m}^{\infty}$ is bounded by the real number $M$, if and only if $|a_n| \leq M$ is established to all $n \geq m$. We state $(a_n)_{n=m}^{\infty}$ is bounded, if and only if existing a real number $M$ s.t. that sequence is bounded by $M$.
+\end{definition}
+\begin{theorem}
+    Let $(a_n)_{n=m}^{\infty}$ and $(b_n)_{n=m}^{\infty}$ be bounded sequences and $x := \lim_{n \to \infty}a_n$, $y := \lim_{n \to \infty}b_n$.
+    \begin{align*}
+        \lim_{n\to\infty}(a_n + b_n) &= \lim_{n\to\infty}a_n + \lim_{n\to\infty}b_n. \\
+        \lim_{n\to\infty}(a_n b_n) &= (\lim_{n\to\infty}a_n) (\lim_{n\to\infty}b_n). \\
+        \lim_{n\to\infty}(c a_n) &= c\lim_{n\to\infty}(a_n). \\
+        \lim_{n\to\infty}(a_n - b_n) &= \lim_{n\to\infty}a_n - \lim_{n\to\infty}b_n. \\
+        \lim_{n\to\infty}b_n^{-1} &= (\lim_{n\to\infty}b_n)^{-1}. \\
+        \lim_{n\to\infty}\frac{a_n}{b_n} &= \frac{\lim_{n\to\infty}a_n}{\lim_{n\to\infty}b_n}. \\
+        \lim_{n\to\infty}\max (a_n, b_n) &= \max (\lim_{n\to\infty}a_n, \lim_{n\to\infty}b_n). \\
+        \lim_{n\to\infty}\min (a_n, b_n) &= \min (\lim_{n\to\infty}a_n, \lim_{n\to\infty}b_n). \\
+    \end{align*}
+\end{theorem}
+
+\section{Generalized family of real numbers \& Suprema and Infima of a sequence}
+
+\section{Limsup, Liminf and limit points}
+
+\section{Subsequence}
+
+\section{Some standard limits \& Real exponentiation}
+
+
+
+\end{document}
