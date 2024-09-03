@@ -1,0 +1,77 @@
+\documentclass[a4paper]{article}
+\usepackage{hyperref}
+\usepackage{amsthm, amsmath, amssymb, amsfonts}
+\usepackage{cite}
+
+\newtheorem{prop}{Proposition}
+\newtheorem{lemma}{Lemma}
+
+\title{Notes on Fourier Analysis}
+\author{HLXY}
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+    Some notes after reading \textit{Fourier Analysis: An Introduction}.
+\end{abstract}
+\tableofcontents
+
+\section{Preliminaries on Riemann integration}
+\par In this section, we'll take a brief review on definition and main properties of Riemann integrable functions on $\mathbb{R}$ and integration of almost everywhere continuous functions.
+\par Firstly, we'll give the Riemann integrable theorem on the real line. Besides the classical integration theory, we also introduce null set and give the sufficient and necessary condition where a non-continuous function is integrable.
+\par Then, we'll discuss dual and multiple integrals. Especially, we'll extend the definition of integrable Schwartz function to the whole $\mathbb{R}^d$ space.
+
+\subsection{Definition of Riemann integrable function}
+\par Let $f$ be a real-value function on $[a,b]$, where $[a,b]$ is a bounded closed interval in $\mathbb{R}$. Importing the proportion $P$ to separate $[a,b]$ to finite small intervals, exactly there exists finite real numbers $x_0, x_1, \dots, x_N$, such tha
+$$a=x_0 < x_1 < \dots < x_{N-1} < x_N=b,$$
+For this proportion, let $I_j$ be the interval $[x_{j-1},x_j]$, $|I_j|$ be the length of $I_j$, that $|I_j|=x_j-x_{j-1}$. Define the superior and inferior Riemann sum of $f$ on proportion $P$ as
+\begin{gather}
+    \mathcal{U}(P, f) = \sum_{j=1}^N [\sup_{x \in I_j} f(x)]|I_j| \\
+    \mathcal{I}(P, f) = \sum_{j=1}^N [\inf_{x \in I_j} f(x)]|I_j|
+\end{gather}
+Noting that, if $f$ is bounded, then $\mathcal{U}(P, f)$ and $\mathcal{I}(P, f)$ exist. Obviously $\mathcal{U}(P, f)$ is greater than $\mathcal{I}(P, f)$, and if for any $\epsilon>0$, there exists a proportion $P$, such that
+$$\mathcal{U}(P, f) - \mathcal{I}(P, f) < \epsilon$$
+then $f$ is \textbf{Riemann integrable}, or simply $f$ is integrable.
+\par To define the Riemann integration of $f$, we need to make a short discussion, if proportion $P\prime$ is not a proportion of $[a,b]$, then $P^\prime$ is derived from $P$ by adding some proportion points, then we call $P^\prime$ a refinement of $P$. While adding each points, we can get
+\begin{gather}
+    \mathcal{U}(P^\prime, f)\leq\mathcal{U}(P, f) \\
+    \mathcal{I}(P^\prime, f)\geq\mathcal{I}(P, f)
+\end{gather}
+Then we have, if $P_1$ and $P_2$ are two proportions of $[a,b]$, then
+\begin{equation}
+    \mathcal{U}(P_1, f) \geq \mathcal{U}(P_2, f) \\
+\end{equation}
+Take the union $P^\prime$ of $P_1$ and $P_2$, we have
+\begin{equation}
+    \mathcal{U}(P_1, f) \geq \mathcal{U}(P^\prime, f) \geq \mathcal{I}(P^\prime, f) \geq \mathcal{I}(P_1, f)
+\end{equation}
+We can get that from the boundedness of $f$,
+\begin{equation}
+    U=\inf_P\mathcal{U}(P, f) \text{ and } L=\sup_P\mathcal{I}(P, f)
+\end{equation}
+are both exist and $U \leq L$. Furthermore, if $f$ is integrable, then $U=L$, define the value of its integration as $\int_{a}^{b}f(x)dx$.
+\par Lastly, for a complex function $f=u+iv$, if its real part $u$ and imaginary part $v$ are both integrable, then $f$ is integrable, and its integration is
+\begin{equation}
+    \int_{a}^{b}f(x)dx = \int_{a}^{b}u(x)dx + i\int_{a}^{b}v(x)dx
+\end{equation}
+
+\subsubsection{Basic Properties}
+\begin{prop}
+    If $f$ and $g$ are integrable on interval $[a,b]$, then:
+    \begin{enumerate}
+        \item $f+g$ is integrable, and $\int_{a}^{b}f(x)+g(x)dx = \int_a^b f(x)dx + \int_a^b g(x)dx$
+        \item if $c \in \mathbb{C}$, then $\int_{a}^{b}c f(x)dx = c\int_a^b f(x)dx$
+        \item if $f$ and $g$ are real value functions and $f(x)\leq g(x)$, then $\int_a^b f(x)dx \leq \int_a^b g(x)dx$
+        \item if $c \in [a, b]$, then $\int_a^b f(x)dx = \int_a^c f(x)dx + \int_c^b f(x)dx$
+    \end{enumerate}
+\end{prop}
+\begin{proof}[Proof]
+    This proof is left to the reader as an exercise.
+\end{proof}
+
+\begin{lemma}
+    If $f$ is a real-value integrable function on $[a,b]$, $\phi$ is a real-value continuous function on $\mathbb{R}$, then $\phi \circ f$ is integrable.
+\end{lemma}
+
+\end{document}
