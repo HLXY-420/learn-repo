@@ -2,9 +2,16 @@
 \usepackage{hyperref}
 \usepackage{amsthm, amsmath, amssymb, amsfonts}
 \usepackage{cite}
+\usepackage{cleveref}
 
-\newtheorem{prop}{Proposition}
-\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}{Remark}
+
+\numberwithin{equation}{subsection}
+
+\DeclareMathOperator{\osc}{osc}
 
 \title{Notes on Fourier Analysis}
 \author{HLXY}
@@ -17,28 +24,28 @@
 \end{abstract}
 \tableofcontents
 
-\section{Preliminaries on Riemann integration}
+\section{Review on Integration}
 \par In this section, we'll take a brief review on definition and main properties of Riemann integrable functions on $\mathbb{R}$ and integration of almost everywhere continuous functions.
 \par Firstly, we'll give the Riemann integrable theorem on the real line. Besides the classical integration theory, we also introduce null set and give the sufficient and necessary condition where a non-continuous function is integrable.
 \par Then, we'll discuss dual and multiple integrals. Especially, we'll extend the definition of integrable Schwartz function to the whole $\mathbb{R}^d$ space.
 
 \subsection{Definition of Riemann integrable function}
-\par Let $f$ be a real-value function on $[a,b]$, where $[a,b]$ is a bounded closed interval in $\mathbb{R}$. Importing the proportion $P$ to separate $[a,b]$ to finite small intervals, exactly there exists finite real numbers $x_0, x_1, \dots, x_N$, such tha
+\par Let $f$ be a real-value function on $[a,b]$, where $[a,b]$ is a bounded closed interval in $\mathbb{R}$. Importing the partition $P$ to separate $[a,b]$ to finite small intervals, exactly there exists finite real numbers $x_0, x_1, \dots, x_N$, such tha
 $$a=x_0 < x_1 < \dots < x_{N-1} < x_N=b,$$
-For this proportion, let $I_j$ be the interval $[x_{j-1},x_j]$, $|I_j|$ be the length of $I_j$, that $|I_j|=x_j-x_{j-1}$. Define the superior and inferior Riemann sum of $f$ on proportion $P$ as
+For this partition, let $I_j$ be the interval $[x_{j-1},x_j]$, $|I_j|$ be the length of $I_j$, that $|I_j|=x_j-x_{j-1}$. Define the superior and inferior Riemann sum of $f$ on partition $P$ as
 \begin{gather}
     \mathcal{U}(P, f) = \sum_{j=1}^N [\sup_{x \in I_j} f(x)]|I_j| \\
     \mathcal{I}(P, f) = \sum_{j=1}^N [\inf_{x \in I_j} f(x)]|I_j|
 \end{gather}
-Noting that, if $f$ is bounded, then $\mathcal{U}(P, f)$ and $\mathcal{I}(P, f)$ exist. Obviously $\mathcal{U}(P, f)$ is greater than $\mathcal{I}(P, f)$, and if for any $\epsilon>0$, there exists a proportion $P$, such that
+Noting that, if $f$ is bounded, then $\mathcal{U}(P, f)$ and $\mathcal{I}(P, f)$ exist. Obviously $\mathcal{U}(P, f)$ is greater than $\mathcal{I}(P, f)$, and if for any $\epsilon>0$, there exists a partition $P$, such that
 $$\mathcal{U}(P, f) - \mathcal{I}(P, f) < \epsilon$$
 then $f$ is \textbf{Riemann integrable}, or simply $f$ is integrable.
-\par To define the Riemann integration of $f$, we need to make a short discussion, if proportion $P\prime$ is not a proportion of $[a,b]$, then $P^\prime$ is derived from $P$ by adding some proportion points, then we call $P^\prime$ a refinement of $P$. While adding each points, we can get
+\par To define the Riemann integration of $f$, we need to make a short discussion, if partition $P\prime$ is not a partition of $[a,b]$, then $P^\prime$ is derived from $P$ by adding some partition points, then we call $P^\prime$ a refinement of $P$. While adding each points, we can get
 \begin{gather}
     \mathcal{U}(P^\prime, f)\leq\mathcal{U}(P, f) \\
     \mathcal{I}(P^\prime, f)\geq\mathcal{I}(P, f)
 \end{gather}
-Then we have, if $P_1$ and $P_2$ are two proportions of $[a,b]$, then
+Then we have, if $P_1$ and $P_2$ are two partitions of $[a,b]$, then
 \begin{equation}
     \mathcal{U}(P_1, f) \geq \mathcal{U}(P_2, f) \\
 \end{equation}
@@ -58,6 +65,7 @@ are both exist and $U \leq L$. Furthermore, if $f$ is integrable, then $U=L$, de
 
 \subsubsection{Basic Properties}
 \begin{prop}
+    \label{prop1}
     If $f$ and $g$ are integrable on interval $[a,b]$, then:
     \begin{enumerate}
         \item $f+g$ is integrable, and $\int_{a}^{b}f(x)+g(x)dx = \int_a^b f(x)dx + \int_a^b g(x)dx$
@@ -67,11 +75,444 @@ are both exist and $U \leq L$. Furthermore, if $f$ is integrable, then $U=L$, de
     \end{enumerate}
 \end{prop}
 \begin{proof}[Proof]
-    This proof is left to the reader as an exercise.
+    Obvious.
 \end{proof}
 
 \begin{lemma}
     If $f$ is a real-value integrable function on $[a,b]$, $\phi$ is a real-value continuous function on $\mathbb{R}$, then $\phi \circ f$ is integrable.
 \end{lemma}
+\begin{proof}[Proof]
+    Since $f$ is integrable, $f$ is bounded, then, we can assume that $f(x) \in [-M, M]$ for all $x \in [a, b]$. \\
+    Since $\phi$ is continuous on $\mathbb{R}$, we have that $\phi$ is uniformly continuous on $[a,b]$. Then for each $\epsilon>0$, we have a $\delta$, such that, for all $x_1, x_2 \in [-M, M], |x_1 - x_2| < \delta$, $|\phi(x_1) - \phi(x_2)| < \epsilon$. \\
+    Taking a partition $P$ of $[a, b]$, without loss of generosity, we can assume that each $|I_j| < \delta$. (otherwise we can find a refinement of $P$ with $|I_j| < \delta$),
+    \begin{equation}
+        |\mathcal{U}(P, \phi \circ f) - \mathcal{L}(P, \phi \circ f)| \leq \epsilon |a - b| + 2\delta\mathcal{B}
+    \end{equation}
+    Where $\mathcal{B}$ is the upper bound of $\phi$ on $[a, b]$. Thus, $\phi \circ f$ is integrable.
+\end{proof}
+
+\par We can the following results from the above lemma.
+\begin{itemize}
+    \item If $f$ and $g$ are integrable on $[a, b]$, then $f g$ in integrable on $[a, b]$. \\
+          This can be proved by taking $\phi(x) = x^2$ and $fg = \frac{1}{4}([f+g]^2-[f-g]^2)$.
+    \item If $f$ is integrable on $[a, b]$, then $|f|$ is integrable on $[a, b]$, and
+          \begin{equation}
+              \lvert \int_a^b f(x)dx \rvert \leq \int_a^b |f(x)|dx
+          \end{equation}
+          This can be proved by taking $\phi(x) = \lvert x \rvert$ and \cref{prop1}.
+\end{itemize}
+
+\par Then, we'll give 2 results about integrability.
+
+\begin{prop}
+    Monotone and bounded function $f$ on $[a, b]$ is integrable.
+\end{prop}
+\begin{proof}
+    Without the loss of generosity, let $f$ be monotonically increasing and $a = 0, b = 1$. \\
+    Then for each positive integer $N$, consider the partition $P_N$ with separation points $x_j = \frac{j}{N}$, let $\alpha_j = f(x_j)$, we have,
+    \begin{equation}
+        \mathcal{U}(P_N, f) - \mathcal{L}(P_N, f) = \frac{\alpha_N - \alpha_0}{N} \leq \frac{2B}{N}
+    \end{equation}
+    where $B$ is the upper bound of $f$ on $[0, 1]$.
+\end{proof}
+
+\begin{prop}
+    \label{prop2}
+    Let $f$ be bounded on compact interval $[a, b]$, if $c \in [a, b]$ and for all $\delta>0$ small enough, $f$ is integrable on both $[a, c-\delta]$ and $[c+\delta, b]$, then $f$ is integrable on $[a, b]$.
+\end{prop}
+\begin{proof}
+    Let $|f| < M$, and taking $\delta>0$ small enough that $4\delta M < \epsilon / 3$ \\
+    Let $P_1$ and $P_2$ be two partitions of $[a, c-\delta]$ and $[c+\delta, b]$, respectively, such that $\mathcal{U}(P_1, f) - \mathcal{L}(P_1, f) < \epsilon / 3$ and $\mathcal{U}(P_2, f) - \mathcal{L}(P_2, f) < \epsilon / 3$. \\
+    Then we have partition $P = P_1 \cup [c-\delta, c] \cup [c, c+delta] \cup P_2$, we have,
+    \begin{equation}
+        \mathcal{U}(P, f) - \mathcal{L}(P, f) \leq \mathcal{U}(P_1, f) - \mathcal{L}(P_1, f) + \mathcal{U}(P_2, f) - \mathcal{L}(P_2, f) + 4\delta M < \epsilon
+    \end{equation}
+\end{proof}
+
+\par We'll end up this section with an important approximation lemma.
+
+\begin{lemma}
+    If $f$ is integrable on the circle, and $B$ is the upper bound of $f$, then there exists a sequence of continuous functions on circle $\{f_k\}_{k=1}^\infty$, for any $k=1,2,\dots$, we have,
+    \begin{equation}
+        \sup_{x \in [-\pi, \pi]} \lvert f_k(x) \rvert \leq B
+    \end{equation}
+    and when $k \rightarrow \infty$, we have,
+    \begin{equation}
+        \int_{-\pi}^{\pi} \lvert f(x) - f_k(x) \rvert \rightarrow 0
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    Without the loss of generosity, let $f$ be real-value. (for $f$ which is complex-value, we can prove for its real and imaginary part separately) \\
+    Give $\epsilon>0$, we can take a partition of $[-\pi, \pi]$, which is that $-\pi=x_0<x_1<\dots<x_N=\pi$, such that $\mathcal{U}(P, f) - \mathcal{L}(P, f) < \epsilon$. Then we can define staircase function $f^\star$ as,
+    \begin{equation}
+        f^\star(x) = \sup_{x_{j-1} < y < x_j} f(y) \text{, where } x\in [x_{j-1}, x_j) \text{ and } 1\leq j\leq N
+    \end{equation}
+    By definition we know that $\lvert f^\star \rvert \leq B$, then,
+    \begin{equation}
+        \label{eq:1}
+        \int_{-\pi}^{\pi} \lvert f(x) - f^\star(x) \rvert dx = \int_{-\pi}^{\pi} ( f^\star(x) - f(x) ) dx < \epsilon
+    \end{equation}
+    Now we can polish $f^\star$ to be continuous, keeping the approximation under the lemma. For $\delta>0$ small enough, when the distance between $x$ and separation points $x_j, j=1,\dots,N-1$ is greater than or equal to $\delta$, taking $\tilde{f}(x) = f^\star(x)$. Let $\tilde{f}$ be piecewise linear, that, $\tilde{f}(x_j \pm \delta)=f^\star (x_j \pm \delta)$, $\tilde{f}(-\pi) = \tilde{f}(\pi) = 0$. \\
+    Hence, we can extend $\tilde{f}$ to a continuous periodic function on $\mathbb{R}$ with period $2\pi$ and upper bound $B$. Then, $\tilde{f}$ and $f^\star$ are not equal only on these $N$ interval centered at separation points with diameter $\delta$, thus,
+    \begin{equation}
+        \int_{-\pi}^{\pi} \lvert f^\star(x) - \tilde{f}(x) \rvert dx < 2BN(2\delta)
+    \end{equation}
+    Taking $\delta$ small enough, we have,
+    \begin{equation}
+        \label{eq:2}
+        \int_{-\pi}^{\pi} \lvert f^\star(x) - f^\star(x) \rvert dx < \epsilon
+    \end{equation}
+    Then, by \cref{eq:1}, \cref{eq:2} and triangle inequality, we have,
+    \begin{equation}
+        \int_{-\pi}^{pi} \lvert f(x)-\tilde{f}(x) \rvert dx < 2\epsilon
+    \end{equation}
+    Let $2\epsilon = \frac{1}{k}$, and $f_k$ be $\tilde{f}$, we get the sequence $\{f_k\}$ satisfying the lemma.
+\end{proof}
+
+\subsubsection{Null Set and Discontinuity of Integrable Functions}
+
+\par Continuous functions are integrable, and by \cref{prop2}, piecewise continuous functions are integrable. Then we'll study the discontinuity of integrable functions.
+
+\par Firstly, we'll give the definition of null set: let $E$ be a subset of $\mathbb{R}$, we call $E$ a \textbf{null set}, if for any $\epsilon>0$, there exists countable sequences of open set $\{I_k\}_{k=1}^\infty$, satisfying:
+\begin{enumerate}
+    \item $E \subset \bigcup_{k=1}^\infty I_k$
+    \item $\sum_{k=1}^{\infty} \lvert I_k \rvert < \epsilon$, where $\lvert I_k \rvert$ is the length of $I_k$
+\end{enumerate}
+
+\begin{lemma}
+    The union of countable null sets is a null set.
+\end{lemma}
+\begin{proof}
+    Let $E_1, E_2, \dots$ are null sets, and $E = \bigcup_{i=1}^\infty E_i$. For any $\epsilon>0$, for each $i$, taking open intervals $I_{i, 1}, I_{i, 2}, \dots$, satisfying
+    \begin{equation}
+        E_i \subset \bigcup_{k=1}^\infty I_{i, k} \text{ and } \sum_{k=1}^\infty \lvert I_{i, k} \rvert < \epsilon / 2^i
+    \end{equation}
+    Obviously, we have $E \subset \bigcup_{i, k=1}^\infty I_{i, k}$, and
+    \begin{equation}
+        \sum_{i=1}^\infty \sum_{k=1}^\infty \lvert I_{i, k} \rvert \leq \sum_{i=1}^{\infty} \frac{\epsilon}{2^i} \leq \epsilon
+    \end{equation}
+\end{proof}
+
+\par Then, we can prove properties of Riemann integrable functions at discontinuous points.
+
+\begin{theorem}
+    \label{thm:1}
+    Bounded function $f$ on $[a, b]$ is integrable if and only if the set of its discontinuous points is a null set.
+\end{theorem}
+
+\begin{proof}
+
+\par Let $J = [a,b]$, and $I(c, r) = (c-r, c+r)$ is the open interval centered at $c$ with radius $r(>0)$. Let \textbf{oscillation} of $f$ on $I(c, r)$ be
+\begin{equation}
+    \osc(f, c, r) = \sup \lvert f(x) - f(y) \rvert
+\end{equation}
+where is taking the superior bound of all $x, y \in J \cap I(c, r)$. Since $f$ is bounded, values defined like this exists. Similarly, let \textbf{oscillation} of $f$ at $c$ be
+\begin{equation}
+    \osc(f, c) = \lim_{r \to 0} \osc(f, c, r)
+\end{equation}
+Since $\osc(f,c,r)>0$, and is monotonically decreasing about $r$, so it's well-defined. We need to point that $f$ is continuous at $c$ if and only if $\osc(f,c)=0$. For any $\epsilon > 0$, let $A_\epsilon$ be
+\begin{equation}
+    A_\epsilon = \{c\in J : \osc(f, c) \geq \epsilon\}
+\end{equation}
+With definitions above, we can find that the set of discontinuous points is $\bigcup_{\epsilon>0} A_\epsilon$.
+
+\begin{lemma}
+    If $\epsilon>0$, then $A_\epsilon$ is closed, hence it's also compact.
+\end{lemma}
+\begin{proof}
+    Let $c_n \in A_\epsilon$ converge to $c$, we'll use proof by contradiction, suppose $c \notin A_\epsilon$. Let $\osc(f,c) = \epsilon - \delta$, where $\delta > 0$. Taking $r$ such that $\osc(f,c,r)<\epsilon-\delta/2$, and taking $n$ such that $\lvert c_n - c \rvert < r/2$, then $\osc(f, c_n, r/2) < \epsilon$, we have $\osc(f, c_n) < \epsilon$, which holds contradiction.
+\end{proof}
+
+\par Let's prove the first part of \cref{thm:1}. Suppose the set $\mathcal{D}$ of discontinuous points of $f$ is null set, and $\epsilon>0$. Since $A_\epsilon \subset \mathcal{D}$, we can find a finite open cover of $A_\epsilon$, denote it as $I_1, I_2, \dots, I_N$, which length is less than $\epsilon$. The compliment of the union $I$ of these intervals is compact, since $z \notin A_\epsilon$, we can find an interval $F_z$ for each point $z$ in this compliment, which satisfying $\sup_{x, y \in F_z} \lvert f(x) - f(y) \rvert \leq \epsilon$. Taking a finite subcover of $\bigcup_{z\in I^c} I_z$, denote as $I_{N+1}, \dots, I_{N^\prime}$. Taking partition $P$ of $[a,b]$ consisting of $I_1, I_2, \dots, I_{N^\prime}$, we have,
+\begin{equation}
+    \mathcal{U}(P, f) - \mathcal{L}(P, f) \leq 2M\sum_{j=1}^{N} \lvert I_j \rvert + \epsilon(b - a) \leq C\epsilon
+\end{equation}
+Hence $f$ is integrable on $[a,b]$.
+
+\par On the contrary, Suppose $f$ is integrable on $[a,b]$. Let $\mathcal{D}$ be the set of all discontinuous point of $f$. Since $\mathcal{D} = \bigcup_{n=1}^\infty A_{\frac{1}{n}}$, we only need to prove that for all $n$, $A_{\frac{1}{n}}$ is null set. For any $\epsilon>0$, taking partition $P=\{x_0, x_1, \dots, x_N\}$ of $[a,b]$, such that $\mathcal{U}(P, f)-\mathcal{L}(P, f) < \frac{\epsilon}{n}$. Then, if the intersection of $A_{\frac{1}{n}}$ and $I_j=(x_{j-1}, x_j)$ is non-empty, we know $\sup_{x\in I_j} f(x) - \inf_{x\in I_j} f(x) \geq \frac{1}{n}$, hence,
+\begin{equation}
+    \frac{1}{n} \sum_{\{j: I_j \cap A_{\frac{1}{n}}\} \neq \emptyset} \lvert I_j \rvert \leq \mathcal{U}(P, f) - \mathcal{L}(P, f) < \frac{\epsilon}{n},
+\end{equation}
+Then, taking the intersection of $A_{\frac{1}{n}}$ and $I_j=(x_{j-1}, x_j)$, and slightly extend these intervals' length(for example, add $\epsilon/2^j$ for each $I_j$), we have the open interval covering $A_\epsilon$ with length less than $2\epsilon$. Hence, $A_\epsilon$ is null set.
+
+\end{proof}
+
+\begin{remark}
+    \cref{thm:1} also provide another way to prove that if $f$ and $g$ are both integrable, then $fg$ is integrable.
+\end{remark}
+
+\subsection{Multiple Integrals}
+
+\par We'll take a brief review of main theorem of multiple integrals. Then, we'll import multi improper integrals by extend integration field to the whole $\mathbb{R}^d$.
+
+\subsubsection{Riemann Integrals on $\mathbb{R}^d$}
+
+\par Integrable on $R \in \mathbb{R}^d$ is directly extension of integrable on $[a,b]\in\mathbb{R}$.  Since continuous functions are always integrable, we'll focus on them first.
+\par \textbf{Closed rectangles} on $d$-dimensional space are intervals like,
+\begin{equation}
+    R = \{a_j \leq x \leq b_j : 1 \leq j \leq d\}
+\end{equation}
+where $a_j, b_j \in \mathbb{R}, 1\leq j \leq d$. In other words, $R$ is the product of $d$ small intervals $[a_j, b_j]$ on $\mathbb{R}$,
+\begin{equation}
+    R = [a_1, b_1] \times \dots \times [a_d, b_d]
+\end{equation}
+
+\par If $P_j$ is a partition of $[a_j, b_j]$, then $P = (P_1, \dots, P_d)$ is a \textbf{partition} of $R$. And if $S_j$ is a subinterval of $P_j$, then $S=(S_1 \times \dots \times S_d)$ is a \textbf{subrectangle} of partition $P$. Naturally, the volume $\lvert S \rvert$ of $S$ is the product of the lengths of the sides, exactly, $\lvert S \rvert=\lvert S_1 \rvert \times \dots \times \lvert S_d \rvert$, where $\lvert S_j \rvert$ denotes the length of $S_j$.
+
+\par Now let's define integrable functions on rectangle $R$. Given a bounded real-value function $f$ on $R$ and a partition $P$, the superior and inferior sum of $f$ about $P$ are,
+\begin{equation}
+    \mathcal{U}(P, f) = \sum [\sup_{x\in S} f(x)]\lvert S \rvert \text{, } \mathcal{L}(P, f) = \sum [\inf_{x\in S} f(x)] \lvert S \rvert
+\end{equation}
+
+\par If each $P_j^\prime$ is refinement of $P_j$, then $P^\prime = (P_1^\prime, \dots, P_d^\prime)$ is a refinement of $P$. Similar to the 1-dimensional case, if
+\begin{equation}
+    U = \inf_{P}\mathcal{U}(P, f) \text{ and } L = \sup_{P}\mathcal{L}(P, f)
+\end{equation}
+then $U$ and $L$ are both exist and finite, with $U \leq L$. If for any $\epsilon>0$, there exists a partition $P$, such that
+\begin{equation}
+    \mathcal{U}(P, f) - \mathcal{L}(P, f) < \epsilon
+\end{equation}
+then $f$ is Riemann integrable and $U=L$. Let this value be integration of $f$ on $R$, denoted by
+\begin{equation}
+    \int_R f(x_1, \dots, x_n) dx_1 \dots dx_n \text{, } \int_R f(x)dx \text{, or} \int_R f
+\end{equation}
+
+\par If $f$ is complex-value, we have $f(x) = u(x) + iv(x)$, then, naturally,
+\begin{equation}
+    \int_R f(x)dx = \int_R u(x)dx + i\int_R v(x)dx
+\end{equation}
+
+\par In the following discussion, we mainly concern continuous functions. Obviously, if $f$ is continuous on a closed rectangle $R$, then $f$ is uniformly continuous on $R$, hence $f$ is integrable on $R$. If $f$ is continuous on a closed ball $B$, we can define its integration by this way: let $g$ be an extension of $f$, and when $x \notin B$, $g(x)=0$, then $g$ is integrable on any rectangle containing $B$, and we have,
+\begin{equation}
+    \int_B f(x)dx = \int_R g(x)dx
+\end{equation}
+
+\subsubsection{Repeated Integrals}
+\par Since in most cases, we can find a function's primitive function, we can calculate the integration of many single-value functions by the fundamental theorem of calculus. In $\mathcal{R}^d$, since an integration of a function on $d$-dimensional space can be turned to $d$ integrations of $1$-dimensional functions. So for multiple integration, the calculation is similar to $1$-dimensional case.
+
+\begin{theorem}
+    \label{thm:2}
+    Let $f$ be a continuous function on closed rectangle $R$. Suppose $R = R_1 \times R_2$, where $R_1 \subset \mathbb{R}^{d_1}$, $R_2 \subset \mathbb{R}^{d_2}$, and $d = d_1 + d_2$. If denote $x = (x_1, x_2)$, where $x_i \in \mathbb{R}^{d_i}$, then $F(x_1)=\int_{R_2} f(x_1, x_2)dx_2$ is continuous on $R_1$, and we have,
+    \begin{equation}
+        \int_R f(x)dx = \int_{R_1} ( \int_{R_2} f(x_1, x_2) dx_2 )dx_1
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Since $f$ is uniformly continuous and,
+    \begin{equation}
+        \lvert F(x_1) - F(x_1^\prime) \rvert \leq \int_{R_2} \lvert f(x_1, x_2) - f(x_1^\prime, x_2) \rvert dx_2
+    \end{equation}
+    We know that $F$ is continuous. To show that the equation in the theorem holds, let $P_1$ and $P_2$ be partition of $R_1$ and $R_2$, respectively. If $S$ and $T$ are subrectangles of $P_1$ and $P_2$, respectively, we can get a key inequality,
+    \begin{equation}
+        \sup_{S \times T} f(x_1, x_2) \geq \sup_{x_1 \in S}(\sup_{x_2 \in T} f(x_1, x_2))
+    \end{equation}
+    and,
+    \begin{equation}
+        \inf_{S \times T} f(x_1, x_2) \leq \inf_{x_1 \in S}(\inf_{x_2 \in T} f(x_1, x_2))
+    \end{equation}
+    Therefore, we have,
+    \begin{align}
+        \mathcal{U}(P, f) &= \sum_{S, T} [\sup_{S \times T} f(x_1, x_2)] \lvert S \times T \rvert \\
+                          &\geq \sum_{S} \sum_{T} \sup_{x_1 \in S} [\sup_{x_2 \in T} f(x_1, x_2)] \lvert T \rvert \times \lvert S \rvert \\
+                          &\geq \sum_{S} \sup_{x_1 \in S} (\int_{R_2} f(x_1, x_2) dx_2) \lvert S \rvert \\
+                          &\geq \mathcal{U}(P_1, \int_{R_2} f(x_1, x_2) dx_2)
+    \end{align}
+    For the inferior sum, a similar argument shows that,
+    \begin{equation}
+        \mathcal{L}(P, f) \leq \mathcal{L}(P_1, \int_{R_2} f(x_1, x_2) dx_2) \leq \mathcal{U} (P_1, \int_{R_2} f(x_1, x_2) dx_2) \leq \mathcal{U} (P, f)
+    \end{equation}
+    The result of the theorem is proved in the inequality above. \\
+    Applying this theorem recursively, we have that: if $f$ is continuous on $R \subset \mathbb{R}^d$, where $R=[a_1, b_1]\times\dots\times[a_d, b_d]$, we have,
+    \begin{equation}
+        \int_R f(x)dx = \int_{a_1}^{b_1} ( \int_{a_2}^{b_2} \dots (\int_{a_d}^{b_d} f(x_1, x_2, \dots, x_d) dx_d) \dots dx_2 ) dx_1
+    \end{equation}
+    The right side of the equation is a $d$-times single integral. And it's easy to get from \cref{thm:2} that we can interchange the order of integration in a repeated integral.
+\end{proof}
+
+\subsubsection{The Change of Variable Formula}
+\par If $g:A\to B$ is a continuous differentiable reversible mapping, then we call $g$ a $C^1$ diffeomorphism, and its inverse $g^{-1}:B\to A$ is also continuous differentiable. If we use $D g$ to denote $Jacobian$ of function $g$, then the change of variable formula can be stated as follows.
+
+\begin{theorem}
+    Let $A$ and $B$ be 2 compact subsets of $\mathbb{R}^d$, $g:A\to B$ be a diffeomorphism in $C^1$. If $f$ is continuous on $B$, then we have,
+    \begin{equation}
+        \int_{g(A)} f(x) dx = \int_{A} f(g(y)) \lvert \det(D g)(y) \rvert dy
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Firstly, considering the case that $g$ is a linear transformation $L$. Then, if $\mathcal{R}$ is a rectangle, we have,
+    \begin{equation}
+        \lvert g(\mathcal{R}) \rvert = \lvert \det (L) \rvert \lvert \mathcal{R} \rvert
+    \end{equation}
+    this explains why there's a $\det (D g)$ term on the right side. Actually, in general cases, we can handle this with differential method, applying the above steps to each infinitesimal element of volume. \\
+    The following part is left to the reader.
+\end{proof}
+
+\subsubsection{Spherical Coordinates}
+\par As an important application of the change of variable formula, we often make polar coordinate substitution in $\mathbb{R}^2$, and make spherical coordinate substitution in $\mathbb{R}^3$, and apply extensions of spherical coordinate substitution in $\mathbb{R}^d$.
+\par Generally, taking spherical coordinate substitution in $\mathbb{R}^d$, $x = g(r, \theta_1, \dots, \theta_{d-1})$, where,
+\begin{equation}
+    \begin{cases}
+        x_1, & = r\sin \theta_1 \sin \theta_2 \dots \sin \theta_{d-2} \sin \theta_{d-1}, \\
+        x_2, & = r\sin \theta_1 \sin \theta_2 \dots \sin \theta_{d-2} \cos \theta_{d-1}, \\
+        \vdots \\
+        x_{d-1}, & = r\sin \theta_1 \cos \theta_2, \\
+        x_d &= r\cos \theta_1,
+    \end{cases}
+\end{equation}
+where, $0 \leq \theta_i \leq \pi$, $1 \leq i \leq d-2$ and $0 \leq \theta_{d-1} \leq 2 \pi$. The absolute value of $Jacobian$ of this coordinate substitution is,
+\begin{equation}
+    r^{d-1} \sin^{d-2} \theta_1 \sin^{d-2} \theta_2 \dots \sin \theta_{d-2}
+\end{equation}
+
+\par Any $x \in \mathbb{R}^d - \{0\}$ can be rewritten as $r \gamma$, where $\gamma \in S^{d-1}$ is the unit ball in $\mathbb{R}^d$. If we define,
+\begin{equation}
+    \begin{split}
+        &\int_{S^{d-1}} f(\gamma)d \sigma{\gamma} = \\
+        &\int_{0}^{\pi} \int_{0}^{\pi} \dots \int_{0}^{2\pi} f(g(r, \theta)) \sin^{d-2} \theta_{1} \sin^{d-3} \theta_2 \dots \sin\theta_{d-2} d \theta_{d-1} \dots d\theta_1
+    \end{split}
+\end{equation}
+\par When $B(0, R)$ is a ball centered at origin with radius $R$, we have,
+\begin{equation}
+    \label{eq:3}
+    \int_{B(0, R)} f(x)dx = \int_{S^{d-1}} \int_{0}^{R} f(r\sigma)r^{d-1} dr d\sigma(\gamma)
+\end{equation}
+
+\par Actually, we can define the volume of the unit ball $S^{d-1} \subset \mathbb{R}^d$ as the follows,
+\begin{equation}
+    w_d = \int_{S^{d-1}} d\sigma(\gamma)
+\end{equation}
+
+\par An important application of spherical coordinate substitution is to calculate the integral $\int_{A(R_1, R_2)} \lvert x \rvert^\lambda dx$, where $A(R_1, R_2)$ denote the ring $A(R_1, R_2) = \{R_1 \leq \lvert x \rvert \leq R_2\}$, $\lambda \in \mathbb{R}$. Applying spherical coordinate substitution, we have,
+\begin{equation}
+    \int_{A(R_!, R_2)} \lvert x \rvert^\lambda dx = \int_{S^{d-1}} \int_{R_1}^{R_2} r^{\lambda+d-1} dr d\sigma(\gamma)
+\end{equation}
+Therefore,
+\begin{equation}
+    \int_{A(R_!, R_2)} \lvert x \rvert^\lambda dx =
+    \begin{cases}
+        \frac{w_d}{\lambda+d} [R_2^{\lambda+d} - R_1^{\lambda+d}], & \text{if $\lambda \ne -d$}, \\
+        w_d[\log(R_2) - \log(R_1)], & \text{if $\lambda = -d$},
+    \end{cases}
+\end{equation}
+
+\subsection{Improper Integrals and Integration over $\mathbb{R}^d$}
+\par If we impose some decay at infinity, we can extend most of the integrals of functions in formulas above to $\mathbb{R}^d$.
+
+\subsubsection{Integration of Functions of Moderate Decrease}
+\par For each fixed $N>0$, consider the rectangle in $\mathbb{R}^d$ which centered at the origin with side length $N$: $Q_N = \{|x_j| \leq \frac{N}{2} : 1\leq j \leq d\}$. Let $f$ be a continuous function on $\mathbb{R}^d$,
+\par if the limit,
+\begin{equation}
+    \lim_{N\to\infty} \int_{Q_N} f(x)dx
+\end{equation}
+exists, we denote it as,
+\begin{equation}
+    \int_{\mathbb{R}^d} f(x) dx
+\end{equation}
+
+\par Then we'll discuss a family of special functions which are integrable on $\mathbb{R}^d$. Let $f$ be continuous function on $\mathbb{R}^d$, if there exists a constant $A$, such that,
+\begin{equation}
+    |f(x)| \leq \frac{A}{1+|x|^{d+1}}
+\end{equation}
+we call $f$ is moderate decrease.
+\begin{remark}
+    The $Poisson$ kernel on $\mathbb{R}$, $\mathcal{P}_y(x) = \frac{1}{\pi} \frac{y}{x^2+y^2}$, is an important example of functions of moderate decrease.
+\end{remark}
+
+\par We assert that, if $f$ is a function of moderate decrease, the limit above exists. Let $I_N = \int_{Q_N} f(x)dx$, since $f$ is continuous, it's integrable on bounded closed intervals, then each $I_N$ exists. For $M > N$, we have,
+\begin{equation}
+    |I_M - I_N| \leq \int_{Q_M-Q_N} |f(x)| dx
+\end{equation}
+the set $Q_M - Q_N$ is a subset of the ring $A(aN, bM)=\{aN\leq |x| \leq bM\}$, where $a$ and $b$ are constants related to dimensions $d$. Because rectangle $Q_N$ is obviously a subset of ring $N/2 \leq |x| \leq N \sqrt{d}/2$. Hence, we can get from $f$ is a function of moderate decrease,
+\begin{equation}
+    |I_M - I_N| \leq A \int_{aN \leq |x| \leq bM} |x|^{-d-1} dx
+\end{equation}
+let $\lambda=-d-1$, we know
+\begin{equation}
+    |I_M - I_N| \leq C(\frac{1}{aN} - \frac{1}{bM})
+\end{equation}
+hence, when f is function of moderate decrease, we can get that $\{I_N\}_{N=1}^\infty$ is a Cauchy sequence, so $\int_{\mathbb{R}^d} f(x)dx$ exists.
+
+\par We can also take ball $B_N$ centered at the origin with radius N, instead of rectangle $Q_N$. It's easy for the reader to prove that $\lim_{N\to\infty}\int_{B_N} f(x)dx$ exists and is equal to $\lim_{N\to\infty} \int_{Q_N} f(x)dx$.
+
+\subsubsection{Repeated integrals}
+\par Let's prove the multiple integrals' formula. Here we only discuss $d=2$.
+\begin{theorem}
+    Let $f$ be continuous function of moderate decrease on $\mathbb{R}^2$, then,
+    \begin{equation}
+        F(x_1) = \int_{\mathbb{R}} f(x_1, x_2) dx_2
+    \end{equation}
+    is a function of moderate decrease on $\mathbb{R}$, and the following equation holds,
+    \begin{equation}
+        \int_{\mathbb{R}^2} f(x)dx = \int_{\mathbb{R}} (\int_{\mathbb{R}} f(x_1, x_2) dx_2) dx_1
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    To prove $F$ is function of moderate decrease, we need to test that,
+    \begin{equation}
+        |F(x_1)| \leq \int_{\mathbb{R}} \frac{Adx_2}{1+(x_1^2 + x_2^2)^(\frac{3}{2})} \leq \int_{|x_2| \leq |x_1} + \int_{|x_2| \geq |x_1|}
+    \end{equation}
+    for the first integral, the function $\leq \frac{A}{1+|x_1|^3}$, hence,
+    \begin{equation}
+        \int_{|x_2| \leq |x_1|} \frac{Adx_2}{1+(x_1^2 + x_2^2)^(\frac{3}{2})} \leq \frac{A}{1+|x_1|^3} \int_{|x_2| \leq |x_1|} dx_2 \leq \frac{A^\prime}{1+|x_1|^2}.
+    \end{equation}
+    For the second integral, we have that,
+    \begin{equation}
+        \int_{|x_2| \geq |x_1|} \frac{Adx_2}{1+(x_1^2 + x_2^2)^(\frac{3}{2})} \leq A^{\prime\prime} \int_{|x_2| \geq |x_1|} \frac{dx_2}{1 + |x_2|^3} \leq \frac{A^{\prime\prime\prime}}{1+|x_1|^2}
+    \end{equation}
+    hence $F$ is function of moderate decrease. Also, by \cref{thm:2}, $F$ is continuous. \\
+    To reach the equality, we only need to approximate, and use \cref{thm:2} on finite rectangles. Let $S^c$ be complement of $S$, for any $\epsilon>0$, we have, for $N$ large enough,
+    \begin{equation}
+        |\int_{\mathbb{R}^2} f(x_1, x_2) dx_1 x_2 - \int_{I_N\times I_N} f(x_1, x_2) dx_1 x_2| < \epsilon
+    \end{equation}
+    where $I_N = [-N, N]$, now we know,
+    \begin{equation}
+        \int_{I_N\times I_N} f(x_1, x_2) dx_1 x_2 = \int_{I_N} (\int_{I_N} f(x_1, x_2) dx_2) dx_1
+    \end{equation}
+    write the integral in the last term of the equation as,
+    \begin{equation}
+        \begin{split}
+            = \int_{\mathbb{R}} (\int_{\mathbb{R}} f(x_1, x_2) dx_2) dx_1 &- \int_{I_N^c} (\int_{\mathbb{R}} f(x_1, x_2) dx_2) dx_1 \\
+            &- \int_{I_N} (\int_{I_N^c} f(x_1, x_2) dx_2) dx_1
+        \end{split}
+    \end{equation}
+    now we make an estimate,
+    \begin{equation}
+        \begin{split}
+            |\int_{I_N} (\int_{I_N^c} f(x_1, x_2) dx_2) dx_1| &\leq O(\frac{1}{N^2}) \\
+            &+ C\int_{1\leq |x_1|\leq N} (\int_{|x_2|\geq N} \frac{dx_2}{(|x_1|+|x_2|)^3}) dx_1 \\
+            &\leq O(\frac{1}{N})
+        \end{split}
+    \end{equation}
+    similarly, we have,
+    \begin{equation}
+        |\int_{I_N^c} (\int_{\mathbb{R}} f(x_1, x_2) dx_2) dx_1| \leq \frac{C}{N}
+    \end{equation}
+    hence, we can find $N$ large enough, such that,
+    \begin{equation}
+        |\int_{I_N\times I_N} f(x_1, x_2) dx_1 x_2 - \int_{\mathbb{R}} (\int_{\mathbb{R}} f(x_1, x_2) dx_2) dx_1| < \epsilon
+    \end{equation}
+    holds.
+\end{proof}
+
+\subsubsection{Spherical coordinates}
+\par In $\mathbb{R}^d$, spherical coordinate can be written as $x = r \gamma$, where $r\geq 0$, and $\gamma$ is on the unit sphere $S^{d-1}$. If $f$ is function of moderate decrease, then for each fixed $\gamma \in S^{d-1}, f(r\gamma)r^{d-1}$ is also function of moderate decrease on $\mathbb{R}^d$.
+In fact, we have
+\begin{equation}
+    |f(r\gamma)r^{d-1}| \leq A\frac{r^{d-1}}{1+|r\gamma|^{d-1}} \leq \frac{B}{1+r^2}
+\end{equation}
+hence, let $R \to \infty$ in \cref{eq:3}, we have,
+\begin{equation}
+    \int_{\mathbb{R}^d}f(x)dx = \int_{S^{d-1}} \int_{0}^{\infty} f(r\gamma)r^{d-1} drd\sigma(\gamma)
+\end{equation}
+so, if we combine \cref{eq:3} with,
+\begin{equation}
+    \int_{\mathbb{R}^d}f(R(x))dx = \int_{\mathbb{R}^d} f(x)dx
+\end{equation}
+we have,
+\begin{equation}
+    \int_{S^{d-1}} f(R(\gamma)) d\sigma(\gamma) = \int_{S^{d-1}} f(\gamma)d\sigma(\gamma)
+\end{equation}
+
+\section{The origin of Fourier Analysis}
 
 \end{document}
